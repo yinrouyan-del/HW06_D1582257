@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!-- 【文件骨架】：宣告 HTML5 文件類型，指定繁體中文（zh-Hant） -->
+<html lang="zh-Hant">
+<head>
+    <!-- 【網頁資訊】：UTF-8 字元編碼與 RWD 視埠設定 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="本篇一頁式深度報導介紹國定古蹟台中舊火車站的建置歷史、辰野式紅磚建築工藝、文化散步動線與空間導覽。HW06 加入 CSS 盒模型美化與互動樣式。">
+    <meta name="author" content="顏尹柔 (學號：D1582257)">
+    <meta name="robots" content="index, follow">
+
+    <!-- 【Open Graph 社群分享協定】：社群預覽卡片，更新圖檔為 222.jpg -->
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:title" content="世紀風華與鐵道記憶：台中舊火車站歷史與建築深度報導（HW06）">
+    <meta property="og:description" content="國定古蹟台中舊火車站建置歷史、辰野式式樣建築工藝、文化散步動線與空間比較速覽。">
+    <meta property="og:image" content="222.jpg">
+    <meta property="og:image:alt" content="台中舊火車站辰野式紅白磚造站體與中央尖塔鐘樓全景">
+
+    <title>世紀風華與鐵道記憶：台中舊火車站歷史與建築深度報導（HW06）</title>
+
+    <!-- ==========================================
+         方法二：style 元素（集中撰寫整頁共用樣式）
+         包含元素選擇器、類別選擇器、ID 選擇器與互動狀態
+         ========================================== -->
+    <style>
+        /* --- 基礎環境與全域排版（元素選擇器） --- */
+        * {
+            box-sizing: border-box; /* 確保 padding 與 border 不會撐大元素宣告的寬度 */
+        }
+
+        body {
+            font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.85; /* 適當行高以提升中文長文易讀性 */
+            color: #2b2b2b; /* 深灰炭黑文字，對比溫和不刺眼 */
+            background-color: #f7f5f0; /* 典雅人文米白色底，呼應歷史古蹟氛圍 */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 內容容器：置中並限制最大閱讀寬度，維持版面舒適度 */
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 20px 48px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05); /* 輕微陰影區隔頁面層次 */
+        }
+
+        /* --- 標題階層層次（元素選擇器） --- */
+        h1, h2, h3 {
+            color: #8a3324; /* 辰野式紅磚典雅色系作為主題色 */
+            line-height: 1.35;
+            margin-top: 1.2em;
+            margin-bottom: 0.6em;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            text-align: center;
+            border-bottom: 3px double #8a3324;
+            padding-bottom: 14px;
+        }
+
+        h2 {
+            font-size: 1.38rem;
+            border-left: 6px solid #8a3324;
+            padding-left: 12px;
+            margin-top: 1.8em;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            color: #4a4a4a;
+            border-bottom: 1px dashed #d1c7bd;
+            padding-bottom: 6px;
+        }
+
+        p {
+            margin: 1em 0;
+            text-align: justify; /* 左右對齊使報導段落整齊 */
+        }
+
+        /* 水平分隔線樣式 */
+        hr {
+            border: 0;
+            border-top: 1px solid #e5ded7;
+            margin: 28px 0;
+        }
+
+        /* --- 導覽與超連結互動狀態（虛擬類別選擇器） --- */
+        a {
+            color: #9c3b28;
+            text-decoration: underline;
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* 滑鼠移入狀態 */
+        a:hover {
+            color: #ffffff;
+            background-color: #9c3b28;
+            text-decoration: none;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        /* 鍵盤操作焦點提示（無障礙體驗） */
+        a:focus-visible {
+            outline: 3px solid #d97706;
+            outline-offset: 2px;
+            background-color: #fef3c7;
+            color: #78350f;
+        }
+
+        /* 導覽目錄專用盒模型（類別選擇器） */
+        .nav-container {
+            background-color: #fcf9f6;
+            border: 1px solid #ebdcd0;
+            border-radius: 8px;
+            padding: 16px 24px;
+            margin: 20px 0;
+        }
+
+        .nav-container ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        .nav-container li {
+            margin-bottom: 8px;
+        }
+
+        /* 清單項目間距 */
+        ul, ol {
+            padding-left: 28px;
+            line-height: 1.9;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* --- 景點比較表格美化（元素選擇器，取代舊式 border="1"） --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto; /* 窄螢幕時可水平滑動不破版 */
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 合併相鄰儲存格邊框 */
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        caption {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #555555;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #d8cfc4; /* 細緻低對比框線 */
+            padding: 12px 14px; /* 充足內距便於閱讀 */
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #ede4dc; /* 雅緻表頭背景色 */
+            color: #6a2417;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #faf7f4; /* 斑馬紋交替底色 */
+        }
+
+        tbody tr:hover {
+            background-color: #f2ebe3; /* 懸停高亮 */
+        }
+
+        /* --- 多媒體與圖片自適應（類別與元素選擇器） --- */
+        figure {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%; /* 防止圖片超出容器寬度 */
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #e0d7ce;
+        }
+
+        figcaption {
+            font-size: 0.88rem;
+            color: #666666;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        /* 影片與地圖媒體自適應容器（類別選擇器） */
+        .responsive-media {
+            max-width: 100%;
+            border: 1px solid #d5cbc0;
+            border-radius: 6px;
+            display: block;
+            margin: 14px 0;
+        }
+
+        /* 原生 details 收折樣式 */
+        details {
+            background-color: #faf8f5;
+            border: 1px solid #e5ded5;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 16px 0;
+        }
+
+        details summary {
+            cursor: pointer;
+            color: #8a3324;
+            padding: 4px 0;
+        }
+
+        /* --- 補充區塊（ID 選擇器） --- */
+        /* 以 ID 選擇器指定 aside 走讀補充區塊，給予古典磚黃色塊提示 */
+        #aside-travel-tips {
+            background-color: #fbf7ee;
+            border-left: 5px solid #c9933b; /* 側邊金色提示條 */
+            border-right: 1px solid #f0e6d2;
+            border-top: 1px solid #f0e6d2;
+            border-bottom: 1px solid #f0e6d2;
+            border-radius: 0 6px 6px 0;
+            padding: 18px 24px;
+            margin: 32px 0;
+        }
+
+        #aside-travel-tips h2 {
+            border-left: none;
+            padding-left: 0;
+            color: #925f16;
+            margin-top: 0;
+        }
+
+        /* 頁首與頁尾細節美化 */
+        header {
+            padding-bottom: 12px;
+        }
+
+        .header-meta {
+            color: #6b6b6b;
+            font-size: 0.92rem;
+            margin: 4px 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e8ded4;
+            font-size: 0.95rem;
+        }
+
+        /* --- 響應式微調（窄螢幕 @media 查詢） --- */
+        @media (max-width: 600px) {
+            .page-wrapper {
+                padding: 16px 12px;
+            }
+
+            h1 {
+                font-size: 1.45rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.88rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <!-- 【語意元素 1 - header】：頁首區塊 -->
+    <header id="top">
+        <h1>世紀風華與鐵道記憶：台中舊火車站歷史與建築深度報導</h1>
+        <p class="header-meta"><small>百年鐵道門戶的空間演進、辰野金吾式樣磚造美學與文資活化觀察</small></p>
+        <p class="header-meta"><strong>報導整理者：</strong>顏尹柔（學號：D1582257）</p>
+        <p class="header-meta"><strong>資料整理日期：</strong>2026 年 10 月 21 日</p>
+    </header>
+
+    <hr>
+
+    <!-- 【語意元素 2 - nav】：導航連結區塊（套用 .nav-container 類別選擇器） -->
+    <nav class="nav-container">
+        <h2>報導章節導覽目錄</h2>
+        <ul>
+            <li><a href="#section-history">一、世紀門戶：台中舊火車站的歷史發展與城市定位</a></li>
+            <li><a href="#section-architecture">二、紅磚風華：辰野金吾式樣建築工藝與特色</a></li>
+            <li><a href="#section-tour-route">三、漫步建議：個人規劃的舊站鐵道文化巡禮動線</a></li>
+            <li><a href="#section-landmarks-table">四、建築速覽：舊站區三大核心歷史空間比較</a></li>
+            <li><a href="#section-media-records">五、影像與影音紀實：見證蒸氣鐵道時光</a></li>
+            <li><a href="#section-location-map">六、地理定位：台中舊火車站位置與走讀地圖</a></li>
+            <li><a href="#aside-travel-tips">七、走讀補充：參訪須知與文化園區小叮嚀（補充區塊）</a></li>
+            <li><a href="#section-bibliography">八、參考資料與版權出處說明</a></li>
+        </ul>
+    </nav>
+
+    <hr>
+
+    <!-- 【語意元素 3 - main】：主要內容標籤 -->
+    <main>
+        <!-- 【語意元素 4 - article】：專題報導主文 -->
+        <article>
+            <!-- 【語意元素 5 - section（第 1 章節）】：歷史沿革 -->
+            <section id="section-history">
+                <h2>一、世紀門戶：台中舊火車站的歷史發展與城市定位</h2>
+                <p>
+                    坐落於台中市中區的「台中舊火車站」，前身為日治時期 1905 年（明治 38 年）建立的第一代木造站房。隨著台灣南北縱貫鐵路全線通車與中部客貨運輸運量劇增，日本總督府於 1917 年（大正 6 年）改建為第二代磚造站體，成為中部地區最主要的交通門戶樞紐。
+                    <!-- 方法一：行內樣式第 1 處（使用 style 屬性設定重點標記文字之背景色、文字色、內距與圓角，突顯閱讀焦點） -->
+                    <mark style="background-color: #f9e2df; color: #8a3324; padding: 2px 6px; border-radius: 3px; font-weight: bold;">這座車站走過一世紀，不僅是無數旅人離家與歸鄉的共同起點</mark>，更帶動了站前中正路（現臺灣大道）、宮原眼科周邊金融聚落與自由路商圈的蓬勃繁榮。
+                </p>
+                <p>
+                    2016 年 10 月，隨著台中市區鐵路高架化新站正式落成通車，服務近百年的地面鐵軌與第二代站房正式功成身退。其兼具工藝美學與重大歷史見證的站體並未拆除，而是以國定古蹟身分獲妥善保留。如今舊站主體與舊第一月台、退役柴電機車頭、光華號車廂以及後方貨運舊倉庫群相互串聯，轉型為兼具文資展演與市集功能的<strong>「台中驛鐵道文化園區」</strong>，使鐵道文化資產在當代生活中煥發新生。
+                </p>
+            </section>
+
+            <hr>
+
+            <!-- 【語意元素 5 - section（第 2 章節）】：建築特色 -->
+            <section id="section-architecture">
+                <h2>二、紅磚風華：辰野金吾式樣建築工藝與特色</h2>
+                <p>
+                    台中舊火車站主體建築屬於日治時期公共建築廣泛採用的<mark>「辰野式樣（自由古典風格）」</mark>，立面以質地堅實的紅磚砌築，並交替嵌飾白色洗石子水平飾帶，紅白相間對比鮮明。正立面中央玄關屋頂聳立著文藝復興式中央尖塔鐘樓，山牆正面泥塑有象徵富貴豐收的「台灣香蕉與鳳梨」浮雕勳章飾，展現西洋近代建築融合台灣在地風土的獨特趣味；挑高的大廳更具備開闊通風與充足天然採光。
+                </p>
+
+                <h3>舊站建築核心工藝清單</h3>
+                <ul>
+                    <li><strong>辰野式紅白橫帶紅磚立面：</strong>精選紅磚結合水平白色洗石子飾帶，呈現典雅之英國安妮女王復興風格。</li>
+                    <li><strong>中央鐘樓山牆本土泥塑浮雕：</strong>鐘樓正面雕琢台灣特色水果圖騰，展現日治近代官廳融合本地物產之裝飾意象。</li>
+                    <li><strong>大正鑄鐵鏤空遮雨棚結構：</strong>舊第一月台採用雙柱鑄鐵支撐架構，柱頭點綴鐵鑄渦卷花飾，見證大正工業金屬鑄造工藝。</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <!-- 【語意元素 5 - section（第 3 章節）】：參訪路線與有序清單 -->
+            <section id="section-tour-route">
+                <h2>三、漫步建議：個人規劃的舊站鐵道文化巡禮動線</h2>
+                <!-- 方法一：行內樣式第 2 處（使用 style 屬性針對此特定散步前導段落增加灰磚色左外框與背景底色，形成引言外觀） -->
+                <p style="border-left: 4px solid #8a3324; background-color: #fdf8f7; padding: 10px 14px; margin: 14px 0; font-size: 0.95rem;">
+                    <em>【散步建議說明】以下行程路線為報導整理者實地走讀勘查後規劃之動線，依順向不折返原則排列，建議下午造訪以捕捉斜陽映照紅磚的立面風采。</em>
+                </p>
+                <ol>
+                    <li><strong>舊站前廣場立面全景仰望：</strong>於寬廣的站前廣場駐足，仰角欣賞中央鐘樓與紅白相間對稱立面之建築平衡美。</li>
+                    <li><strong>步入玄關大廳體驗挑高拱窗：</strong>走進挑高候車大廳，感受日光灑落的大面採光窗，細看退役舊售票口與百年木製長椅。</li>
+                    <li><strong>舊第一月台漫步近賞退役列車：</strong>穿至舊第一月台，穿行於古典鑄鐵雕花雨棚下，近距離觸摸展示的光華號車廂與老火車頭。</li>
+                    <li><strong>舊軌道步道延伸至文創倉庫區：</strong>順著平面保留之舊鋼軌散步至後方倉庫群，走訪鐵道主題市集，品味新舊交融之城市氛圍。</li>
+                </ol>
+            </section>
+
+            <hr>
+
+            <!-- 【語意元素 5 - section（第 4 章節）】：三大歷史空間比較表（已完全移除舊式 border 屬性） -->
+            <section id="section-landmarks-table">
+                <h2>四、建築速覽：舊站區三大核心歷史空間比較</h2>
+                <!-- 【表格標籤 - table】：移除舊式 border="1"、cellpadding、cellspacing，完全交由 CSS 盒模型渲染 -->
+                <div class="table-responsive">
+                    <table>
+                        <caption><strong>台中舊火車站區三大主要歷史建築與設施比較表</strong></caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">建築/空間名稱</th>
+                                <th scope="col">落成年份與保存定位</th>
+                                <th scope="col">主要工法與構造特色</th>
+                                <th scope="col">建議參觀重點與時間</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>舊站房主體與中央鐘樓</strong></td>
+                                <td>1917 年（大正 6 年）<br>國定古蹟</td>
+                                <td>辰野金吾式樣、紅白相間紅磚造、歇山式銅皮屋頂、中央尖頂鐘塔</td>
+                                <td>山牆水果勳章泥塑、挑高候車大廳（約 25-30 分鐘）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>舊第一月台與鑄鐵遮雨棚</strong></td>
+                                <td>1908 年至 1917 年陸續構築<br>國定古蹟附屬設施</td>
+                                <td>大正時期鏤空鑄鐵雙柱遮雨棚、波浪形鋼構屋頂、水泥低矮月台</td>
+                                <td>柱頭典雅渦卷鐵飾花紋、近距離觸摸老鐵道（約 20 分鐘）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>鐵道舊倉庫群（現文創園區）</strong></td>
+                                <td>1930 年代前後陸續興建<br>歷史建築活化</td>
+                                <td>木桁架磚石倉庫、挑高防潮空間、貨運專用挑高卸貨月台</td>
+                                <td>紅磚山牆倉儲結構、文創展覽與鐵道紀念商品（約 30 分鐘）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <hr>
+
+            <!-- 【語意元素 5 - section（第 5 章節）】：照片與影音媒體 -->
+            <section id="section-media-records">
+                <h2>五、影像與影音紀實：見證蒸氣鐵道時光</h2>
+
+                <h3>站房建築代表性影像</h3>
+                <figure>
+                    <!-- 圖檔路徑更新為 222.jpg，由 CSS 的 img { max-width: 100%; height: auto; } 自適應控制 -->
+                    <img src="222.jpg" alt="台中舊火車站辰野式紅白磚造站體與中央尖塔鐘樓全景" width="700">
+                    <figcaption>
+                        <strong>圖一：台中舊火車站主體外觀全景（2016 年退役前夕）。</strong><br>
+                        <em>圖片來源：維基共享資源（Wikimedia Commons，採創用 CC 姓名標示-相同方式分享 4.0 國際授權）</em>
+                    </figcaption>
+                </figure>
+
+                <h3>現場影音報導（YouTube 嵌入）</h3>
+                <p>透過實地影音走訪紀錄，更深入走進這座承載百年歷史的車站空間：</p>
+
+                <details open>
+                    <summary><strong>點此展開／收合內嵌 YouTube 播放器</strong></summary>
+                    <p><small>（提示：如直接以 file:// 開啟本機檔案可能受 YouTube 網域限制影響，請使用 VS Code Live Server 或本機 HTTP 伺服器預覽）</small></p>
+                    <iframe class="responsive-media"
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/Zni6mDPKE0k?si=1zfaIDpMpIDe3TZu"
+                            title="YouTube video player"
+                            style="border:0;"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
+                </details>
+
+                <p>
+                    若上方內嵌播放器無法直接播放，亦可點擊下方一般連結至 YouTube 原平台觀看：<br>
+                    <a href="https://www.youtube.com/watch?v=Zni6mDPKE0k" target="_blank" rel="noopener noreferrer">點此開啟 YouTube 觀看：台中舊火車站導覽與紀實影片</a>
+                </p>
+            </section>
+
+            <hr>
+
+            <!-- 【語意元素 5 - section（第 6 章節）】：Google 地圖嵌入 -->
+            <section id="section-location-map">
+                <h2>六、地理定位：台中舊火車站位置與走讀地圖</h2>
+                <p>
+                    <strong>景點實體地址：</strong>400 台灣台中市中區臺灣大道一段 1 號（原建國路 172 號，現台中驛鐵道文化園區）
+                </p>
+                <p>
+                    舊站房位於台中市中區綠川周邊，緊鄰台中新火車站前站出入口，搭乘台鐵或台中市區公車至台中車站下車即可步行抵達。
+                </p>
+
+                <iframe class="responsive-media"
+                        width="600"
+                        height="400"
+                        src="https://maps.google.com/maps?q=24.13735,120.68697&amp;z=17&amp;output=embed"
+                        title="國定古蹟台中舊火車站（台中驛）地理位置 Google 地圖"
+                        style="border:0;"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+
+                <p>
+                    若嵌入地圖無法載入，可點擊外部連結開啟 Google 地圖全螢幕導航：<br>
+                    <a href="https://maps.google.com/?q=24.13735,120.68697" target="_blank" rel="noopener noreferrer">點此開啟 Google 地圖檢視台中舊火車站位置</a>
+                </p>
+            </section>
+        </article>
+
+        <hr>
+
+        <!-- 【語意元素 7 - aside】：走讀補充資訊區塊（使用 ID 選擇器 #aside-travel-tips 美化） -->
+        <aside id="aside-travel-tips">
+            <h2>七、走讀補充：參訪須知與園區小叮嚀</h2>
+            <p>
+                <em>本區塊為走讀參訪的輔助資訊整理，方便前往實地探訪的讀者參考：</em>
+            </p>
+            <ul>
+                <li><strong>園區開放時間：</strong>舊站前廣場與戶外月台全日開放通行；歷史站房內部展覽與文創店鋪營業時間通常為每日 11:00 至 21:00。</li>
+                <li><strong>古蹟保護提醒：</strong>站房本體與第一月台均屬國定古蹟，參觀老火車車廂與鑄鐵遮雨棚時請勿攀爬或刻劃。</li>
+                <li><strong>無障礙動線：</strong>舊站月台銜接新站處設有平緩坡道與電梯設施，輪椅與嬰兒推車皆可便利通行。</li>
+            </ul>
+        </aside>
+    </main>
+
+    <hr>
+
+    <!-- 【語意元素 8 - footer】：頁尾區塊 -->
+    <footer>
+        <section id="section-bibliography">
+            <h2>八、參考資料與版權出處說明</h2>
+            <p>本報導之文字歷史考證、建築細部特點與地標資料整理自以下權威文獻與官方站點：</p>
+            <ul>
+                <li>
+                    <strong>文字資料來源一：</strong>
+                    <a href="https://nchdb.boch.gov.tw/assets/overview/monument/19950422000001" target="_blank" rel="noopener noreferrer">文化部文化資產局國家文化資產網 - 國定古蹟臺中驛（舊臺中車站）</a>
+                </li>
+                <li>
+                    <strong>文字資料來源二：</strong>
+                    <a href="https://travel.taichung.gov.tw/zh-tw/attractions/detail/28" target="_blank" rel="noopener noreferrer">台中市政府觀光旅遊局 - 景點介紹：台中火車站（舊站）與周邊園區</a>
+                </li>
+                <li>
+                    <strong>多媒體素材出處：</strong>
+                    照片圖檔取自維基共享資源（Wikimedia Commons，採創用 CC 姓名標示-相同方式分享 4.0 國際授權）；影片取自 YouTube 公開分享之鐵道走讀報導；地理位置資訊引用自 Google 地圖開放嵌入圖資。
+                </li>
+            </ul>
+        </section>
+
+        <hr>
+        <p><strong>作業作品資訊：</strong>網頁設計第六次作業 - 使用 CSS 美化台中舊火車站報導</p>
+        <p><strong>作者：</strong>顏尹柔（學號：D1582257） | <strong>最後修訂：</strong>2026 年 10 月 21 日</p>
+        
+        <!-- 方法一：行內樣式第 3 處（使用 style 屬性設定小字宣告的文字顏色與上邊距，降低輔助說明的視覺干擾） -->
+        <p style="color: #888888; font-size: 0.85rem; margin-top: 10px;">
+            <small>聲明：本報導為課程作業練習製作，頁面引述內容遵循學術引用與創用 CC 授權規定。</small>
+        </p>
+
+        <!-- 【回到頁首連結】：對應 header 的 id="top" 錨點 -->
+        <p><a href="#top">回到報導頂部 ↑</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
